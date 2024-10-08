@@ -1,0 +1,124 @@
+/** @format */
+.wrapper {
+	width: 100vw;
+	height: 100vh;
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	background-color: #fff;
+}
+
+.heading {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	color: #000; /* Black text color */
+	font-size: 3rem; /* Default font size for larger screens */
+	text-align: center;
+	padding: 20px;
+}
+
+/* For tablet-sized screens (between 768px and 1024px) */
+@media (max-width: 1024px) {
+	.heading {
+		font-size: 2.5rem; /* Slightly smaller font size for tablets */
+	}
+}
+
+/* For mobile screens (less than 768px) */
+@media (max-width: 768px) {
+	.heading {
+		font-size: 2rem; /* Smaller font size for mobiles */
+	}
+}
+
+/* For very small mobile screens (less than 480px) */
+@media (max-width: 480px) {
+	.heading {
+		font-size: 1.5rem; /* Further reduce font size for very small screens */
+	}
+}
+
+.modal-container {
+	width: 50vw;
+	margin: 0 auto;
+	padding: 20px;
+	border-radius: 8px;
+	box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.modal-title {
+	font-size: 24px;
+	font-weight: bold;
+	margin-bottom: 20px;
+	text-align: start;
+	color: #333; /* Darker font color */
+}
+
+.form-group {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	padding-left: 8px;
+	padding-right: 12px;
+}
+
+.form-group input,
+.form-group select {
+	width: 100%;
+	padding: 10px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	font-size: 14px;
+	background-color: #fff; /* Make input background white */
+	color: #333; /* Darker text color */
+	outline: none; /* Remove default outline */
+	transition: border-color 0.3s ease; /* Smooth transition for border */
+}
+
+.form-group input:focus,
+.form-group select:focus {
+	border-color: #007bff; /* Highlight border on focus */
+}
+
+.form-group label {
+	display: flex;
+	align-items: center;
+	gap: 5px;
+	color: #333; /* Darker label color */
+}
+
+.submit-button {
+	background-color: #007bff;
+	color: white;
+	padding: 10px 20px;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	font-size: 16px;
+}
+
+.submit-button:hover {
+	background-color: #0056b3;
+}
+
+.error-message {
+	color: red;
+	font-size: 12px;
+	margin-top: 5px;
+}
+
+@media screen and (max-width: 600px) {
+	.modal-container {
+		padding: 15px;
+	}
+
+	.modal-title {
+		font-size: 20px;
+	}
+}
