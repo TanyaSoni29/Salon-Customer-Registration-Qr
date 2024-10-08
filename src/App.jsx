@@ -1,5 +1,5 @@
 /** @format */
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import toast from 'react-hot-toast';
@@ -44,6 +44,7 @@ export default App;
 function AddCustomerModal() {
 	const { id } = useParams();
 	const preferred_location = id;
+	const [successMessage, setSuccessMessage] = useState(false);
 	const {
 		register,
 		handleSubmit,
@@ -70,6 +71,9 @@ function AddCustomerModal() {
 			};
 			const newUser = await createUser(newUserData);
 			console.log(newUser);
+			if (newUser) {
+				setSuccessMessage(true);
+			}
 		} catch (error) {
 			console.error(error);
 		}
@@ -97,385 +101,401 @@ function AddCustomerModal() {
 
 	return (
 		<div className='modal-container'>
-			<h3 className='modal-title'>Registeration</h3>
-			<form onSubmit={handleSubmit(handleSubmitForm)}>
-				<div
+			{successMessage ? (
+				<p
 					style={{
-						width: '100%',
-						padding: '8px',
-						display: 'flex',
-						justifyContent: 'center',
-						alignItems: 'center',
-						gap: 2,
+						color: 'green',
+						fontSize: '1.5rem',
+						textAlign: 'center',
+						marginBottom: '20px',
 					}}
 				>
-					<div
-						style={{
-							width: '50%',
-							display: 'flex',
-							justifyContent: 'center',
-							alignItems: 'center',
-						}}
-					>
-						<input
-							type='text'
-							placeholder='First Name'
-							{...register('firstName', {
-								required: 'First name is required',
-								maxLength: {
-									value: 100,
-									message: 'First name cannot exceed 100 characters',
-								},
-							})}
-							style={{
-								width: '100%',
-								padding: '10px',
-								border: '1px solid #ccc',
-								borderRadius: '4px',
-								fontSize: '14px',
-								backgroundColor: ' #fff' /* Make input background white */,
-								color: ' #333' /* Darker text color */,
-								outline: 'none' /* Remove default outline */,
-								transition: 'border-color 0.3s ease',
-							}}
-						/>
-						{errors.firstName && (
-							<p className='error-message'>{errors.firstName.message}</p>
-						)}
-					</div>
-					<div
-						style={{
-							width: '50%',
-							display: 'flex',
-							justifyContent: 'center',
-							alignItems: 'center',
-						}}
-					>
-						<input
-							type='text'
-							placeholder='Last Name'
-							{...register('lastName', {
-								required: 'Last name is required',
-								maxLength: {
-									value: 100,
-									message: 'Last name cannot exceed 100 characters',
-								},
-							})}
-							style={{
-								width: '100%',
-								padding: '10px',
-								border: '1px solid #ccc',
-								borderRadius: '4px',
-								fontSize: '14px',
-								backgroundColor: ' #fff' /* Make input background white */,
-								color: ' #333' /* Darker text color */,
-								outline: 'none' /* Remove default outline */,
-								transition: 'border-color 0.3s ease',
-							}}
-						/>
-						{errors.lastName && (
-							<p className='error-message'>{errors.lastName.message}</p>
-						)}
-					</div>
-				</div>
-
-				<div className='form-group'>
+					Thank you for registering!
+				</p>
+			) : (
+				<>
 					{' '}
-					<input
-						type='email'
-						placeholder='Email'
-						{...register('email', {
-							required: 'Email is required',
-							pattern: {
-								value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-								message: 'Please enter a valid email address',
-							},
-						})}
-					/>
-					{errors.email && (
-						<p className='error-message'>{errors.email.message}</p>
-					)}
-				</div>
-
-				<div
-					style={{
-						width: '100%',
-						padding: '8px',
-						display: 'flex',
-						justifyContent: 'center',
-						alignItems: 'center',
-						gap: 2,
-					}}
-				>
-					<div
-						style={{
-							width: '50%',
-							display: 'flex',
-							justifyContent: 'center',
-							alignItems: 'center',
-						}}
-					>
-						<input
-							type='text'
-							placeholder='Phone Number'
-							{...register('phone_number', {
-								required: 'Phone number is required',
-								maxLength: {
-									value: 15,
-									message: 'Phone number must not exceed 15 digits',
-								},
-								pattern: {
-									value: /^[0-9]+$/, // Accepts only numeric values
-									message: 'Phone number must contain only numbers',
-								},
-							})}
+					<h3 className='modal-title'>Registeration</h3>
+					<form onSubmit={handleSubmit(handleSubmitForm)}>
+						<div
 							style={{
 								width: '100%',
-								padding: '10px',
-								border: '1px solid #ccc',
-								borderRadius: '4px',
-								fontSize: '14px',
-								backgroundColor: ' #fff' /* Make input background white */,
-								color: ' #333' /* Darker text color */,
-								outline: 'none' /* Remove default outline */,
-								transition: 'border-color 0.3s ease',
-							}}
-						/>
-						{errors.phone_number && (
-							<p className='error-message'>{errors.phone_number.message}</p>
-						)}
-					</div>
-					<div
-						style={{
-							width: '50%',
-							display: 'flex',
-							justifyContent: 'center',
-							alignItems: 'center',
-						}}
-					>
-						<input
-							type='password'
-							placeholder='Password'
-							{...register('password', {
-								required: 'Password is required',
-								minLength: {
-									value: 6,
-									message: 'Password must be at least 6 characters',
-								},
-							})}
-							style={{
-								width: '100%',
-								padding: '10px',
-								border: '1px solid #ccc',
-								borderRadius: '4px',
-								fontSize: '14px',
-								backgroundColor: ' #fff' /* Make input background white */,
-								color: ' #333' /* Darker text color */,
-								outline: 'none' /* Remove default outline */,
-								transition: 'border-color 0.3s ease',
-							}}
-						/>
-						{errors.password && (
-							<p className='error-message'>{errors.password.message}</p>
-						)}
-					</div>
-				</div>
-
-				<div className='form-group'>
-					<textarea
-						rows={2}
-						style={{
-							width: '100%',
-							padding: '10px',
-							border: '1px solid #ccc',
-							borderRadius: '4px',
-							fontSize: '14px',
-							backgroundColor: ' #fff' /* Make input background white */,
-							color: ' #333' /* Darker text color */,
-							outline: 'none' /* Remove default outline */,
-							transition: 'border-color 0.3s ease',
-						}}
-						type='text'
-						placeholder='Address'
-						{...register('address', { required: true })}
-					/>
-					{errors.address && (
-						<p className='error-message'>{errors.address.message}</p>
-					)}
-				</div>
-
-				<div
-					className=''
-					style={{
-						width: '100%',
-						padding: '8px',
-						display: 'flex',
-						justifyContent: 'center',
-						alignItems: 'center',
-						gap: 2,
-					}}
-				>
-					<div
-						style={{
-							width: '50%',
-							display: 'flex',
-							justifyContent: 'center',
-							alignItems: 'center',
-						}}
-					>
-						<input
-							type='text'
-							placeholder='Post Code'
-							{...register('post_code', { required: true })}
-							style={{
-								width: '100%',
-								padding: '10px',
-								border: '1px solid #ccc',
-								borderRadius: '4px',
-								fontSize: '14px',
-								backgroundColor: ' #fff' /* Make input background white */,
-								color: ' #333' /* Darker text color */,
-								outline: 'none' /* Remove default outline */,
-								transition: 'border-color 0.3s ease',
-							}}
-						/>
-						{errors.post_code && (
-							<p className='error-message'>{errors.post_code.message}</p>
-						)}
-					</div>
-					<div
-						style={{
-							width: '50%',
-							display: 'flex',
-							justifyContent: 'center',
-							alignItems: 'center',
-						}}
-					>
-						<input
-							style={{
-								width: '100%',
-								padding: '10px',
-								border: '1px solid #ccc',
-								borderRadius: '4px',
-								fontSize: '14px',
-								outline: 'none' /* Remove default outline */,
-								transition: 'border-color 0.3s ease',
-								backgroundColor: ' #fff' /* Make input background white */,
-								color: ' #333' /* Darker text color */,
-							}}
-							type='text'
-							placeholder='Referred By'
-							{...register('referred_by')}
-						/>
-					</div>
-					<div
-						style={{
-							width: '50%',
-							display: 'flex',
-							justifyContent: 'center',
-							alignItems: 'center',
-						}}
-					>
-						<select
-							{...register('gender', { required: true })}
-							style={{
-								width: '100%',
-								padding: '10px',
-								border: '1px solid #ccc',
-								borderRadius: '4px',
-								fontSize: '14px',
-								backgroundColor: ' #fff' /* Make input background white */,
-								color: ' #333' /* Darker text color */,
-								outline: 'none' /* Remove default outline */,
-								transition: 'border-color 0.3s ease',
+								padding: '8px',
+								display: 'flex',
+								justifyContent: 'center',
+								alignItems: 'center',
+								gap: 2,
 							}}
 						>
-							<option value=''>Select Gender</option>
-							<option value='Male'>Male</option>
-							<option value='Female'>Female</option>
-							<option value='Other'>Other</option>
-						</select>
-					</div>
-				</div>
+							<div
+								style={{
+									width: '50%',
+									display: 'flex',
+									justifyContent: 'center',
+									alignItems: 'center',
+								}}
+							>
+								<input
+									type='text'
+									placeholder='First Name'
+									{...register('firstName', {
+										required: 'First name is required',
+										maxLength: {
+											value: 100,
+											message: 'First name cannot exceed 100 characters',
+										},
+									})}
+									style={{
+										width: '100%',
+										padding: '10px',
+										border: '1px solid #ccc',
+										borderRadius: '4px',
+										fontSize: '14px',
+										backgroundColor: ' #fff' /* Make input background white */,
+										color: ' #333' /* Darker text color */,
+										outline: 'none' /* Remove default outline */,
+										transition: 'border-color 0.3s ease',
+									}}
+								/>
+								{errors.firstName && (
+									<p className='error-message'>{errors.firstName.message}</p>
+								)}
+							</div>
+							<div
+								style={{
+									width: '50%',
+									display: 'flex',
+									justifyContent: 'center',
+									alignItems: 'center',
+								}}
+							>
+								<input
+									type='text'
+									placeholder='Last Name'
+									{...register('lastName', {
+										required: 'Last name is required',
+										maxLength: {
+											value: 100,
+											message: 'Last name cannot exceed 100 characters',
+										},
+									})}
+									style={{
+										width: '100%',
+										padding: '10px',
+										border: '1px solid #ccc',
+										borderRadius: '4px',
+										fontSize: '14px',
+										backgroundColor: ' #fff' /* Make input background white */,
+										color: ' #333' /* Darker text color */,
+										outline: 'none' /* Remove default outline */,
+										transition: 'border-color 0.3s ease',
+									}}
+								/>
+								{errors.lastName && (
+									<p className='error-message'>{errors.lastName.message}</p>
+								)}
+							</div>
+						</div>
 
-				<div
-					style={{
-						width: '100%',
-						padding: '8px',
-						display: 'flex',
-						justifyContent: 'start',
-						alignItems: 'center',
-						gap: 4,
-					}}
-				>
-					<label
-						style={{
-							display: 'flex',
-							alignItems: 'center',
-							gap: '5px',
-							color: ' #333',
-						}}
-					>
-						<input
-							type='checkbox'
-							{...register('gdpr_sms_active')}
-							style={{
-								width: '50%',
-								padding: '10px',
-								border: '1px solid #ccc',
-								borderRadius: '4px',
-								fontSize: '14px',
-								backgroundColor: ' #fff' /* Make input background white */,
-								color: ' #333' /* Darker text color */,
-								outline: 'none' /* Remove default outline */,
-								transition: 'border-color 0.3s ease',
-							}}
-						/>
-						SMS
-					</label>
-					<label
-						style={{
-							display: 'flex',
-							alignItems: 'center',
-							gap: '5px',
-							color: ' #333',
-						}}
-					>
-						<input
-							type='checkbox'
-							{...register('gdpr_email_active')}
-							style={{
-								width: '50%',
-								padding: '10px',
-								border: '1px solid #ccc',
-								borderRadius: '4px',
-								fontSize: '14px',
-								backgroundColor: ' #fff' /* Make input background white */,
-								color: ' #333' /* Darker text color */,
-								outline: 'none' /* Remove default outline */,
-								transition: 'border-color 0.3s ease',
-							}}
-						/>
-						Email
-					</label>
-				</div>
+						<div className='form-group'>
+							{' '}
+							<input
+								type='email'
+								placeholder='Email'
+								{...register('email', {
+									required: 'Email is required',
+									pattern: {
+										value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+										message: 'Please enter a valid email address',
+									},
+								})}
+							/>
+							{errors.email && (
+								<p className='error-message'>{errors.email.message}</p>
+							)}
+						</div>
 
-				<div
-					style={{
-						width: '100%',
-						display: 'flex',
-						justifyContent: 'end',
-						alignItems: 'center',
-					}}
-				>
-					<button
-						type='submit'
-						className='submit-button'
-					>
-						Submit
-					</button>
-				</div>
-			</form>
+						<div
+							style={{
+								width: '100%',
+								padding: '8px',
+								display: 'flex',
+								justifyContent: 'center',
+								alignItems: 'center',
+								gap: 2,
+							}}
+						>
+							<div
+								style={{
+									width: '50%',
+									display: 'flex',
+									justifyContent: 'center',
+									alignItems: 'center',
+								}}
+							>
+								<input
+									type='text'
+									placeholder='Phone Number'
+									{...register('phone_number', {
+										required: 'Phone number is required',
+										maxLength: {
+											value: 15,
+											message: 'Phone number must not exceed 15 digits',
+										},
+										pattern: {
+											value: /^[0-9]+$/, // Accepts only numeric values
+											message: 'Phone number must contain only numbers',
+										},
+									})}
+									style={{
+										width: '100%',
+										padding: '10px',
+										border: '1px solid #ccc',
+										borderRadius: '4px',
+										fontSize: '14px',
+										backgroundColor: ' #fff' /* Make input background white */,
+										color: ' #333' /* Darker text color */,
+										outline: 'none' /* Remove default outline */,
+										transition: 'border-color 0.3s ease',
+									}}
+								/>
+								{errors.phone_number && (
+									<p className='error-message'>{errors.phone_number.message}</p>
+								)}
+							</div>
+							<div
+								style={{
+									width: '50%',
+									display: 'flex',
+									justifyContent: 'center',
+									alignItems: 'center',
+								}}
+							>
+								<input
+									type='password'
+									placeholder='Password'
+									{...register('password', {
+										required: 'Password is required',
+										minLength: {
+											value: 6,
+											message: 'Password must be at least 6 characters',
+										},
+									})}
+									style={{
+										width: '100%',
+										padding: '10px',
+										border: '1px solid #ccc',
+										borderRadius: '4px',
+										fontSize: '14px',
+										backgroundColor: ' #fff' /* Make input background white */,
+										color: ' #333' /* Darker text color */,
+										outline: 'none' /* Remove default outline */,
+										transition: 'border-color 0.3s ease',
+									}}
+								/>
+								{errors.password && (
+									<p className='error-message'>{errors.password.message}</p>
+								)}
+							</div>
+						</div>
+
+						<div className='form-group'>
+							<textarea
+								rows={2}
+								style={{
+									width: '100%',
+									padding: '10px',
+									border: '1px solid #ccc',
+									borderRadius: '4px',
+									fontSize: '14px',
+									backgroundColor: ' #fff' /* Make input background white */,
+									color: ' #333' /* Darker text color */,
+									outline: 'none' /* Remove default outline */,
+									transition: 'border-color 0.3s ease',
+								}}
+								type='text'
+								placeholder='Address'
+								{...register('address', { required: true })}
+							/>
+							{errors.address && (
+								<p className='error-message'>{errors.address.message}</p>
+							)}
+						</div>
+
+						<div
+							className=''
+							style={{
+								width: '100%',
+								padding: '8px',
+								display: 'flex',
+								justifyContent: 'center',
+								alignItems: 'center',
+								gap: 2,
+							}}
+						>
+							<div
+								style={{
+									width: '50%',
+									display: 'flex',
+									justifyContent: 'center',
+									alignItems: 'center',
+								}}
+							>
+								<input
+									type='text'
+									placeholder='Post Code'
+									{...register('post_code', { required: true })}
+									style={{
+										width: '100%',
+										padding: '10px',
+										border: '1px solid #ccc',
+										borderRadius: '4px',
+										fontSize: '14px',
+										backgroundColor: ' #fff' /* Make input background white */,
+										color: ' #333' /* Darker text color */,
+										outline: 'none' /* Remove default outline */,
+										transition: 'border-color 0.3s ease',
+									}}
+								/>
+								{errors.post_code && (
+									<p className='error-message'>{errors.post_code.message}</p>
+								)}
+							</div>
+							<div
+								style={{
+									width: '50%',
+									display: 'flex',
+									justifyContent: 'center',
+									alignItems: 'center',
+								}}
+							>
+								<input
+									style={{
+										width: '100%',
+										padding: '10px',
+										border: '1px solid #ccc',
+										borderRadius: '4px',
+										fontSize: '14px',
+										outline: 'none' /* Remove default outline */,
+										transition: 'border-color 0.3s ease',
+										backgroundColor: ' #fff' /* Make input background white */,
+										color: ' #333' /* Darker text color */,
+									}}
+									type='text'
+									placeholder='Referred By'
+									{...register('referred_by')}
+								/>
+							</div>
+							<div
+								style={{
+									width: '50%',
+									display: 'flex',
+									justifyContent: 'center',
+									alignItems: 'center',
+								}}
+							>
+								<select
+									{...register('gender', { required: true })}
+									style={{
+										width: '100%',
+										padding: '10px',
+										border: '1px solid #ccc',
+										borderRadius: '4px',
+										fontSize: '14px',
+										backgroundColor: ' #fff' /* Make input background white */,
+										color: ' #333' /* Darker text color */,
+										outline: 'none' /* Remove default outline */,
+										transition: 'border-color 0.3s ease',
+									}}
+								>
+									<option value=''>Select Gender</option>
+									<option value='Male'>Male</option>
+									<option value='Female'>Female</option>
+									<option value='Other'>Other</option>
+								</select>
+							</div>
+						</div>
+
+						<div
+							style={{
+								width: '100%',
+								padding: '8px',
+								display: 'flex',
+								justifyContent: 'start',
+								alignItems: 'center',
+								gap: 4,
+							}}
+						>
+							<label
+								style={{
+									display: 'flex',
+									alignItems: 'center',
+									gap: '5px',
+									color: ' #333',
+								}}
+							>
+								<input
+									type='checkbox'
+									{...register('gdpr_sms_active')}
+									style={{
+										width: '50%',
+										padding: '10px',
+										border: '1px solid #ccc',
+										borderRadius: '4px',
+										fontSize: '14px',
+										backgroundColor: ' #fff' /* Make input background white */,
+										color: ' #333' /* Darker text color */,
+										outline: 'none' /* Remove default outline */,
+										transition: 'border-color 0.3s ease',
+									}}
+								/>
+								SMS
+							</label>
+							<label
+								style={{
+									display: 'flex',
+									alignItems: 'center',
+									gap: '5px',
+									color: ' #333',
+								}}
+							>
+								<input
+									type='checkbox'
+									{...register('gdpr_email_active')}
+									style={{
+										width: '50%',
+										padding: '10px',
+										border: '1px solid #ccc',
+										borderRadius: '4px',
+										fontSize: '14px',
+										backgroundColor: ' #fff' /* Make input background white */,
+										color: ' #333' /* Darker text color */,
+										outline: 'none' /* Remove default outline */,
+										transition: 'border-color 0.3s ease',
+									}}
+								/>
+								Email
+							</label>
+						</div>
+
+						<div
+							style={{
+								width: '100%',
+								display: 'flex',
+								justifyContent: 'end',
+								alignItems: 'center',
+							}}
+						>
+							<button
+								type='submit'
+								className='submit-button'
+							>
+								Submit
+							</button>
+						</div>
+					</form>
+				</>
+			)}
 		</div>
 	);
 }
