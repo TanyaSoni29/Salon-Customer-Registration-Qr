@@ -314,9 +314,8 @@ function AddCustomerModal() {
 							>
 								<input
 									type='date'
-									placeholder='Date of Birth'
 									{...register('dob', {
-										required: true,
+										required: 'Date of birth is required',
 									})}
 									style={{
 										width: '100%',
@@ -324,9 +323,9 @@ function AddCustomerModal() {
 										border: '1px solid #ccc',
 										borderRadius: '4px',
 										fontSize: '14px',
-										backgroundColor: ' #fff' /* Make input background white */,
-										color: ' #333' /* Darker text color */,
-										outline: 'none' /* Remove default outline */,
+										backgroundColor: '#fff',
+										color: '#333',
+										outline: 'none',
 										transition: 'border-color 0.3s ease',
 									}}
 								/>
@@ -537,7 +536,7 @@ function AddCustomerModal() {
 	);
 }
 
-export const createUser = async (data) => {
+const createUser = async (data) => {
 	const toastId = toast.loading('Loading...');
 	try {
 		// Step 1: Register the user

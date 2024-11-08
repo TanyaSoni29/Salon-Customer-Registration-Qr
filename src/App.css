@@ -113,6 +113,26 @@
 	margin-top: 5px;
 }
 
+input[type='date'] {
+	-webkit-appearance: menulist-button; /* Ensures icon displays in Chrome and Safari */
+	appearance: menulist-button; /* Ensures icon displays in Firefox */
+	padding: 10px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	background-color: #fff;
+	color: #333;
+	cursor: pointer; /* Makes it clear that it’s clickable */
+	font-size: 14px;
+}
+
+/* Specific styling for the date picker icon */
+input[type='date']::-webkit-calendar-picker-indicator {
+	opacity: 1; /* Ensures icon visibility */
+	cursor: pointer;
+	display: inline-block;
+	color: #000; /* Ensures the icon color is visible */
+}
+
 @media screen and (max-width: 600px) {
 	.modal-container {
 		padding: 15px;
