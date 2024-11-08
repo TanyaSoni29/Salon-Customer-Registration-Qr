@@ -58,10 +58,11 @@ function AddCustomerModal() {
 				password: data.password,
 				firstName: data.firstName,
 				lastName: data.lastName,
-				email: data.email,
+				email: data.email || '',
 				address: data.address,
 				post_code: data.post_code,
 				phone_number: data.phone_number,
+				dob: data.dob || '',
 				gender: data.gender,
 				gdpr_sms_active: data.gdpr_sms_active || false,
 				gdpr_email_active: data.gdpr_email_active || false,
@@ -202,13 +203,16 @@ function AddCustomerModal() {
 							<input
 								type='email'
 								placeholder='Email'
-								{...register('email', {
-									required: 'Email is required',
-									pattern: {
-										value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-										message: 'Please enter a valid email address',
-									},
-								})}
+								{...register(
+									'email'
+									// {
+									// 	required: 'Email is required',
+									// 	pattern: {
+									// 		value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+									// 		message: 'Please enter a valid email address',
+									// 	},
+									// }
+								)}
 							/>
 							{errors.email && (
 								<p className='error-message'>{errors.email.message}</p>
@@ -236,17 +240,20 @@ function AddCustomerModal() {
 								<input
 									type='text'
 									placeholder='Phone Number'
-									{...register('phone_number', {
-										required: 'Phone number is required',
-										maxLength: {
-											value: 15,
-											message: 'Phone number must not exceed 15 digits',
-										},
-										pattern: {
-											value: /^[0-9]+$/, // Accepts only numeric values
-											message: 'Phone number must contain only numbers',
-										},
-									})}
+									{...register(
+										'phone_number'
+										// {
+										// 	required: 'Phone number is required',
+										// 	maxLength: {
+										// 		value: 15,
+										// 		message: 'Phone number must not exceed 15 digits',
+										// 	},
+										// 	pattern: {
+										// 		value: /^[0-9]+$/, // Accepts only numeric values
+										// 		message: 'Phone number must contain only numbers',
+										// 	},
+										// }
+									)}
 									style={{
 										width: '100%',
 										padding: '10px',
@@ -295,6 +302,36 @@ function AddCustomerModal() {
 								/>
 								{errors.password && (
 									<p className='error-message'>{errors.password.message}</p>
+								)}
+							</div>
+							<div
+								style={{
+									width: '50%',
+									display: 'flex',
+									justifyContent: 'center',
+									alignItems: 'center',
+								}}
+							>
+								<input
+									type='date'
+									placeholder='Date of Birth'
+									{...register('dob', {
+										required: true,
+									})}
+									style={{
+										width: '100%',
+										padding: '10px',
+										border: '1px solid #ccc',
+										borderRadius: '4px',
+										fontSize: '14px',
+										backgroundColor: ' #fff' /* Make input background white */,
+										color: ' #333' /* Darker text color */,
+										outline: 'none' /* Remove default outline */,
+										transition: 'border-color 0.3s ease',
+									}}
+								/>
+								{errors.dob && (
+									<p className='error-message'>{errors.dob.message}</p>
 								)}
 							</div>
 						</div>
@@ -509,10 +546,11 @@ export const createUser = async (data) => {
 			{
 				firstName: data.firstName || '',
 				lastName: data.lastName || '',
-				email: data.email,
+				email: data.email || '',
 				password: data.password,
 				password_confirmation: data.password,
 				phone_number: data.phone_number,
+				dob: data.dob || '',
 				address: data.address || '',
 				preferred_location: data.preferred_location || '',
 				referred_by: data.referred_by || '',
